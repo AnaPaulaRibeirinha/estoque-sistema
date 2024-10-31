@@ -2,7 +2,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import AddProductButton from '../components/addProductButton'; // Importe o componente
+import AddProductButton from '../components/addProductButton';
+import UpdateProductButton from '../components/updateProductButton';
+import DeleteProductButton from '../components/deleteProductButton';
 
 interface Product {
   id: string;
@@ -18,26 +20,25 @@ const Dashboard: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/api/products'); // Ajuste a URL conforme necessário
-        setProducts(response.data);
-      } catch (err) {
-        setError('Erro ao buscar produtos.');
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/products');
+      setProducts(response.data);
+    } catch (err) {
+      setError('Erro ao buscar produtos.');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchProducts();
   }, []);
 
   const handleLogout = () => {
-    // Implementa o logout, removendo o token do localStorage
-    localStorage.removeItem('token'); // Supondo que você armazena o token no localStorage
-    router.push('/login'); // Redireciona para a página de login
+    localStorage.removeItem('token');
+    router.push('/login');
   };
 
   if (loading) return <div>Carregando...</div>;
@@ -46,10 +47,8 @@ const Dashboard: React.FC = () => {
   return (
     <div>
       <h1>Dashboard</h1>
-      <button onClick={handleLogout} style={styles.button}>
-        Logout
-      </button>
-      <AddProductButton /> {/* Usa o componente para cadastrar produtos */}
+      <button onClick={handleLogout} style={styles.button}>Logout</button>
+      <AddProductButton />
       <table>
         <thead>
           <tr>
@@ -58,6 +57,7 @@ const Dashboard: React.FC = () => {
             <th>Descrição</th>
             <th>Valor</th>
             <th>Estoque</th>
+            <th>Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -68,6 +68,13 @@ const Dashboard: React.FC = () => {
               <td>{product.descricao}</td>
               <td>{product.valor}</td>
               <td>{product.estoque}</td>
+              <td>
+                <UpdateProductButton productId={product.id} />
+                <DeleteProductButton
+                  productId={product.id}
+                  onDelete={fetchProducts} // Atualiza a lista após exclusão
+                />
+              </td>
             </tr>
           ))}
         </tbody>
@@ -85,7 +92,7 @@ const styles = {
     borderRadius: '5px',
     cursor: 'pointer',
     fontSize: '16px',
-    margin: '10px 0', // Adiciona um espaçamento
+    margin: '10px 0',
   },
 };
 
