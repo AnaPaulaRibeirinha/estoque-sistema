@@ -4,7 +4,6 @@ const AddProductButton = () => {
   const router = useRouter();
 
   const handleAddProduct = () => {
-    // Redireciona para a página de cadastro de produtos
     router.push('/addProduct');
   };
 

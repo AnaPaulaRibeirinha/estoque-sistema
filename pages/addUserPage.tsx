@@ -1,4 +1,3 @@
-// pages/addUser.tsx
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -24,7 +23,7 @@ const AddUserPage: React.FC = () => {
       await axios.post('http://localhost:5000/api/users', userData);
       console.log('Usuário cadastrado com sucesso!');
       alert("Cadastro realizado com sucesso!");
-      router.push('/dashboard'); // Redireciona para o dashboard após o cadastro
+      router.push('/dashboard'); 
     } catch (error) {
       console.error('Erro ao cadastrar usuário:', error);
     }

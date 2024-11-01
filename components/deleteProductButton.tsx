@@ -1,10 +1,9 @@
-// components/DeleteProductButton.tsx
 import React from 'react';
 import axios from 'axios';
 
 interface DeleteProductButtonProps {
   productId: string;
-  onDelete: () => void; // Callback para atualizar a lista após exclusão
+  onDelete: () => void; 
 }
 
 const DeleteProductButton: React.FC<DeleteProductButtonProps> = ({ productId, onDelete }) => {
@@ -12,7 +11,7 @@ const DeleteProductButton: React.FC<DeleteProductButtonProps> = ({ productId, on
     try {
       await axios.delete(`http://localhost:5000/api/products/${productId}`);
       alert(`Produto com ID ${productId} foi removido com sucesso!`);
-      onDelete(); // Chama o callback para atualizar a lista de produtos na Dashboard
+      onDelete(); 
     } catch (error) {
       console.error('Erro ao excluir produto:', error);
       alert('Erro ao remover produto. Tente novamente.');

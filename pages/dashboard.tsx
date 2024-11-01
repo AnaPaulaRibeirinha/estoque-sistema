@@ -1,4 +1,3 @@
-// pages/dashboard.tsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -47,12 +46,11 @@ const Dashboard: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // Verifica se o usuário está autenticado
     const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
 
     if (!token || !userData) {
-      router.push('/loginPage'); // Redireciona para o login se não estiver autenticado
+      router.push('/loginPage');
     } else {
       setUser(JSON.parse(userData) as User);
     }
@@ -76,7 +74,13 @@ const Dashboard: React.FC = () => {
         </>
       )}
       <AddProductButton />
-      <AddUserButton />
+      {!user ? (
+        <AddUserButton />
+      ) : (
+        <>
+        </>
+      )}
+      
       <table>
         <thead>
           <tr>
@@ -100,7 +104,7 @@ const Dashboard: React.FC = () => {
                 <UpdateProductButton productId={product.id} />
                 <DeleteProductButton
                   productId={product.id}
-                  onDelete={fetchProducts} // Atualiza a lista após exclusão
+                  onDelete={fetchProducts}
                 />
               </td>
             </tr>

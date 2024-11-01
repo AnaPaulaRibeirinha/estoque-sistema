@@ -8,7 +8,7 @@ const AddProduct: React.FC = () => {
     descricao: '',
     valor: '',
     estoque: '',
-    imagem: null as File | null, // Campo para armazenar o arquivo da imagem
+    imagem: null as File | null, 
   });
   const router = useRouter();
 
@@ -25,14 +25,13 @@ const AddProduct: React.FC = () => {
     if (file) {
       setProductData((prevData) => ({
         ...prevData,
-        imagem: file, // Armazena o arquivo BLOB diretamente
+        imagem: file, 
       }));
     }
   };
 
   const handleAddProduct = async () => {
     try {
-      // Cria o FormData para enviar os dados
       const formData = new FormData();
       formData.append("nome", productData.nome);
       formData.append("descricao", productData.descricao);
@@ -40,17 +39,16 @@ const AddProduct: React.FC = () => {
       formData.append("estoque", productData.estoque);
 
       if (productData.imagem) {
-        formData.append("imagem", productData.imagem); // Adiciona o arquivo BLOB da imagem
+        formData.append("imagem", productData.imagem);
       }
 
-      // Envia os dados via axios com multipart/form-data
       const response = await axios.post('http://localhost:5000/api/products', formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
       console.log('Produto adicionado com sucesso!', response.data);
-      router.push('/dashboard'); // Redireciona para a dashboard após o sucesso
+      router.push('/dashboard');
     } catch (error) {
       console.error('Erro ao adicionar produto:', error);
     }

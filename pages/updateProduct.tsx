@@ -24,7 +24,6 @@ const UpdateProduct: React.FC = () => {
   const { id } = router.query;
 
   useEffect(() => {
-    // Só busca o produto se o ID estiver definido
     const fetchProduct = async () => {
       if (id) {
         try {
@@ -58,7 +57,7 @@ const UpdateProduct: React.FC = () => {
   };
 
   const handleUpdateProduct = async () => {
-    if (!id) return; // Verifica se o ID está disponível antes de prosseguir
+    if (!id) return;
 
     const formData = new FormData();
 
