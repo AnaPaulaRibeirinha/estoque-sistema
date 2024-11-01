@@ -56,33 +56,31 @@ const Dashboard: React.FC = () => {
     }
   }, [router]);
 
-  if (loading) return <div>Carregando...</div>;
-  if (error) return <div>{error}</div>;
+  if (loading) return <div className="text-center">Carregando...</div>;
+  if (error) return <div className="alert alert-danger">{error}</div>;
 
   return (
-    <div>
-      <h1>Dashboard</h1>
+    <div className="container mt-5">
+      <h1 className="mb-4">Dashboard</h1>
       {user ? (
-        <>
-          <p>Olá, {user.nome}!</p>
+        <div className="d-flex justify-content-between align-items-center">
+          <p>Olá, <strong>{user.nome}</strong>!</p>
           <LogoutButton />
-        </>
+        </div>
       ) : (
-        <>
+        <div className="d-flex justify-content-between align-items-center">
           <p>Você não está logado.</p>
           <LoginButton />
-        </>
+        </div>
       )}
-      <AddProductButton />
-      {!user ? (
-        <AddUserButton />
-      ) : (
-        <>
-        </>
-      )}
-      
-      <table>
-        <thead>
+
+      <div className="d-flex justify-content-end mb-3">
+        <AddProductButton />
+        {!user && <AddUserButton />}
+      </div>
+
+      <table className="table table-striped table-bordered">
+        <thead className="thead-dark">
           <tr>
             <th>ID</th>
             <th>Nome</th>
@@ -100,12 +98,9 @@ const Dashboard: React.FC = () => {
               <td>{product.descricao}</td>
               <td>{product.valor}</td>
               <td>{product.estoque}</td>
-              <td>
+              <td className="d-flex gap-2">
                 <UpdateProductButton productId={product.id} />
-                <DeleteProductButton
-                  productId={product.id}
-                  onDelete={fetchProducts}
-                />
+                <DeleteProductButton productId={product.id} onDelete={fetchProducts} />
               </td>
             </tr>
           ))}

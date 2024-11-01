@@ -1,3 +1,4 @@
+// pages/login.tsx
 import React, { useState } from 'react';
 import api from '../api';
 import { useRouter } from 'next/router';
@@ -25,23 +26,28 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="container mt-5">
       <h1>Login</h1>
       <input
         type="email"
+        className="form-control mb-3"
         placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
       <input
         type="password"
+        className="form-control mb-3"
         placeholder="Senha"
         value={senha}
         onChange={(e) => setSenha(e.target.value)}
       />
-      <button onClick={handleLogin}>Entrar</button>
-      {error && <p>{error}</p>}
-
+      <div className="d-flex align-items-center mt-3">
+        <button className="btn btn-primary" onClick={handleLogin}>
+          Entrar
+        </button>
+        {error && <p className="text-danger mb-0 ms-3">{error}</p>}
+      </div>
       <AddUserButton />
     </div>
   );

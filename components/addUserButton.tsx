@@ -9,7 +9,7 @@ const AddUserButton: React.FC = () => {
   };
 
   return (
-    <button onClick={handleRedirect}>
+    <button className="btn btn-success mt-3" onClick={handleRedirect}>
       Cadastro
     </button>
   );

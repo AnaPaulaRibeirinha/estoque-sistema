@@ -11,7 +11,7 @@ const LogoutButton: React.FC = () => {
   };
 
   return (
-    <button onClick={handleLogout}>
+    <button className="btn btn-danger" onClick={handleLogout}>
       Sair
     </button>
   );

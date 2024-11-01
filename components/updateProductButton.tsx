@@ -8,7 +8,7 @@ interface UpdateProductButtonProps {
 const UpdateProductButton: React.FC<UpdateProductButtonProps> = ({ productId }) => {
   return (
     <Link href={`/updateProduct?id=${productId}`} passHref>
-      <button>Atualizar Produto</button>
+      <button className="btn btn-warning">Atualizar Produto</button>
     </Link>
   );
 };
