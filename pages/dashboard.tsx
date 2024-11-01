@@ -5,6 +5,9 @@ import { useRouter } from 'next/router';
 import AddProductButton from '../components/addProductButton';
 import UpdateProductButton from '../components/updateProductButton';
 import DeleteProductButton from '../components/deleteProductButton';
+import AddUserButton from '../components/addUserButton';
+import LoginButton from '../components/loginButton';
+import LogoutButton from '../components/logoutButton';
 
 interface Product {
   id: string;
@@ -14,11 +17,18 @@ interface Product {
   estoque: number;
 }
 
+interface User {
+  id: string;
+  nome: string;
+  email: string;
+}
+
 const Dashboard: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const [user, setUser] = useState<User | null>(null);
 
   const fetchProducts = async () => {
     try {
@@ -36,10 +46,17 @@ const Dashboard: React.FC = () => {
     fetchProducts();
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    router.push('/login');
-  };
+  useEffect(() => {
+    // Verifica se o usuário está autenticado
+    const token = localStorage.getItem('token');
+    const userData = localStorage.getItem('user');
+
+    if (!token || !userData) {
+      router.push('/loginPage'); // Redireciona para o login se não estiver autenticado
+    } else {
+      setUser(JSON.parse(userData) as User);
+    }
+  }, [router]);
 
   if (loading) return <div>Carregando...</div>;
   if (error) return <div>{error}</div>;
@@ -47,8 +64,19 @@ const Dashboard: React.FC = () => {
   return (
     <div>
       <h1>Dashboard</h1>
-      <button onClick={handleLogout} style={styles.button}>Logout</button>
+      {user ? (
+        <>
+          <p>Olá, {user.nome}!</p>
+          <LogoutButton />
+        </>
+      ) : (
+        <>
+          <p>Você não está logado.</p>
+          <LoginButton />
+        </>
+      )}
       <AddProductButton />
+      <AddUserButton />
       <table>
         <thead>
           <tr>
@@ -81,19 +109,6 @@ const Dashboard: React.FC = () => {
       </table>
     </div>
   );
-};
-
-const styles = {
-  button: {
-    padding: '10px 20px',
-    backgroundColor: '#0070f3',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-    fontSize: '16px',
-    margin: '10px 0',
-  },
 };
 
 export default Dashboard;
