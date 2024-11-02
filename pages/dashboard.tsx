@@ -14,6 +14,7 @@ interface Product {
   descricao: string;
   valor: number;
   estoque: number;
+  imagem: string; // Nova propriedade para a URL da imagem
 }
 
 interface User {
@@ -32,7 +33,14 @@ const Dashboard: React.FC = () => {
   const fetchProducts = async () => {
     try {
       const response = await axios.get('http://localhost:5000/api/products');
-      setProducts(response.data);
+      
+      // Converter o Buffer da imagem para uma string base64
+      const productsWithImages = response.data.map((product: Product) => ({
+        ...product,
+        imagem: `data:image/jpeg;base64,${Buffer.from(product.imagem).toString('base64')}`, // Ajuste o tipo conforme necessário
+      }));
+  
+      setProducts(productsWithImages);
     } catch (err) {
       setError('Erro ao buscar produtos.');
       console.error(err);
@@ -87,6 +95,7 @@ const Dashboard: React.FC = () => {
             <th>Descrição</th>
             <th>Valor</th>
             <th>Estoque</th>
+            <th>Imagem</th> {/* Nova coluna para a imagem */}
             <th>Ações</th>
           </tr>
         </thead>
@@ -98,6 +107,9 @@ const Dashboard: React.FC = () => {
               <td>{product.descricao}</td>
               <td>{product.valor}</td>
               <td>{product.estoque}</td>
+              <td>
+                <img src={product.imagem} alt={product.nome} style={{ width: '100px', height: '100px', objectFit: 'cover' }} />
+              </td>
               <td className="d-flex gap-2">
                 <UpdateProductButton productId={product.id} />
                 <DeleteProductButton productId={product.id} onDelete={fetchProducts} />
